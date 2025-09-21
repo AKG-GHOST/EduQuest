@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduQuest</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div class="loader">
+    <h1>EduQuest</h1>
+    <div class="Loading"></div>
+  </div>
+
+  <!-- AUTH PAGE -->
+  <div class="auth-page" id="authPage">
+    <div class="auth-logo">
+      <img src="imglogo/eduquest.jpg" alt="EduQuest Logo">
+    </div>
+    <div class="auth-forms">
+      <!-- LOGIN FORM -->
+      <div class="form-container login">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="loginUser()">Login</button>
+        <p>Don't have an account? <span onclick="toggleAuth()">Register</span></p>
+      </div>
+      <!-- REGISTER FORM -->
+      <div class="form-container register">
+        <h2>Register</h2>
+        <input type="text" id="regUsername" placeholder="Username">
+        <input type="password" id="regPassword" placeholder="Password">
+        <button onclick="registerUser()">Register</button>
+        <p>Already have account? <span onclick="toggleAuth()">Login</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard" id="dashboard" style="display:none">
+
+    <!-- HEADER -->
+    <header>
+      <div class="logo">
+        <img src="imglogo/eduquest.jpg" alt="EduQuest Logo">
+      </div>
+      <div class="profile">
+        <p id="studentName"></p>
+        <button onclick="logoutUser()">Logout</button>
+      </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1>Welcome to <span>EduQuest</span></h1>
+        <p>Learn, Explore, and Achieve Your Academic Goals</p>
+      </div>
+      <div class="hero-animation">
+        <div class="floating-badge"></div>
+        <div class="floating-badge"></div>
+        <div class="floating-badge"></div>
+      </div>
+    </section>
+
+    <!-- PROGRESS CHART -->
+    <section class="progress-section">
+      <h2>Your Progress</h2>
+      <canvas id="progressChart" width="400" height="200"></canvas>
+    </section>
+
+    <!-- PRACTICE GAMES -->
+    <section class="games-section" id="practiceGames">
+      <h2>Practice Games</h2>
+      <div class="game-cards">
+        <div class="game-card" onclick="startGame('math')">
+          <h3>Math Quiz</h3>
+          <p>Solve arithmetic challenges</p>
+        </div>
+        <div class="game-card" onclick="startGame('words')">
+          <h3>Word Builder</h3>
+          <p>Construct words from letters</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXAM PANELS -->
+    <section class="exam-section" id="examPanel">
+      <h2>Exam Panels</h2>
+      <div class="exam-cards">
+        <div class="exam-card" onclick="startExam('science')">
+          <h3>Science Test</h3>
+          <p>Check your knowledge in science</p>
+        </div>
+        <div class="exam-card" onclick="startExam('history')">
+          <h3>History Test</h3>
+          <p>Test your history skills</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAMIFICATION -->
+    <section class="gamification">
+      <h2>Badges & Streaks</h2>
+      <div class="badges">
+        <div class="badge" id="badge1">🏆</div>
+        <div class="badge" id="badge2">🎖️</div>
+        <div class="badge" id="badge3">🥇</div>
+      </div>
+      <p>Current Streak: <span id="streakCounter">0</span> days</p>
+    </section>
+
+  </div>
+
+  <!-- JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
