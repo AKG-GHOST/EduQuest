@@ -1,4 +1,3 @@
-// =====================================================
 // Loader - hide after page load
 window.onload = function() {
   document.querySelector('.loader').style.display = 'none';
@@ -13,48 +12,67 @@ function toggleAuth() {
 }
 
 // =====================================================
-// Mock user database
-let users = [];
+// Backend API base URL
+const API_URL = "http://localhost:3000"; // UPDATED
+
 let currentUser = null;
 
 // =====================================================
-// REGISTER FUNCTION
-function registerUser() {
+// REGISTER FUNCTION (uses backend)
+async function registerUser() {
   const username = document.getElementById('regUsername').value;
   const password = document.getElementById('regPassword').value;
 
   if (username && password) {
-    // Check for existing user
-    const exists = users.find(u => u.username === username);
-    if (exists) {
-      alert('Username already exists!');
-      return;
+    try {
+      const res = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Registered successfully! Please login.");
+        toggleAuth();
+      } else {
+        alert(data.message || "Registration failed.");
+      }
+    } catch (err) {
+      alert("Server error: " + err.message);
     }
-    users.push({ username, password, progress: [], streak: 0 });
-    alert('Registered successfully! Please login.');
-    toggleAuth();
   } else {
     alert('Please enter valid username and password.');
   }
 }
 
 // =====================================================
-// LOGIN FUNCTION
-function loginUser() {
+// LOGIN FUNCTION (uses backend)
+async function loginUser() {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
-  const user = users.find(u => u.username === username && u.password === password);
-  if (user) {
-    currentUser = user;
-    document.getElementById('authPage').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    document.getElementById('studentName').innerText = currentUser.username;
+  try {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
 
-    updateProgressChart();
-    updateStreak();
-  } else {
-    alert('Invalid credentials!');
+    const data = await res.json();
+    if (res.ok) {
+      currentUser = data.user; // user object from backend
+      document.getElementById('authPage').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('studentName').innerText = currentUser.username;
+
+      updateProgressChart();
+      updateStreak();
+    } else {
+      alert(data.message || "Invalid credentials!");
+    }
+  } catch (err) {
+    alert("Server error: " + err.message);
   }
 }
 
@@ -71,7 +89,7 @@ function logoutUser() {
 function updateProgressChart() {
   const ctx = document.getElementById('progressChart').getContext('2d');
 
-  // Sample progress data
+  // Example progress (could later be fetched from backend)
   const data = {
     labels: ['Math', 'Science', 'History', 'English', 'Games'],
     datasets: [{
@@ -147,9 +165,20 @@ function wordGame() {
 
 // =====================================================
 // STREAK FUNCTIONS
-function incrementStreak() {
+async function incrementStreak() {
   currentUser.streak += 1;
   updateStreak();
+
+  // Save streak to backend
+  try {
+    await fetch(`${API_URL}/streak`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: currentUser.username, streak: currentUser.streak })
+    });
+  } catch (err) {
+    console.error("Failed to update streak:", err);
+  }
 }
 
 function updateStreak() {
