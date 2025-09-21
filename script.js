@@ -1,24 +1,28 @@
 // Loader - hide after page load
+// =======================
 window.onload = function() {
   document.querySelector('.loader').style.display = 'none';
   document.getElementById('authPage').style.display = 'flex';
 };
 
-// =====================================================
+// =======================
 // AUTH TOGGLE between login/register
+// =======================
 function toggleAuth() {
   document.querySelector('.form-container.login').classList.toggle('active');
   document.querySelector('.form-container.register').classList.toggle('active');
 }
 
-// =====================================================
-// Backend API base URL
-const API_URL = "http://localhost:3000"; // UPDATED
+// =======================
+// Backend API URL
+// =======================
+const API_URL = "http://localhost:3000"; // Use your server IP if needed
 
 let currentUser = null;
 
-// =====================================================
-// REGISTER FUNCTION (uses backend)
+// =======================
+// REGISTER FUNCTION
+// =======================
 async function registerUser() {
   const username = document.getElementById('regUsername').value;
   const password = document.getElementById('regPassword').value;
@@ -46,8 +50,9 @@ async function registerUser() {
   }
 }
 
-// =====================================================
-// LOGIN FUNCTION (uses backend)
+// =======================
+// LOGIN FUNCTION
+// =======================
 async function loginUser() {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
@@ -61,7 +66,7 @@ async function loginUser() {
 
     const data = await res.json();
     if (res.ok) {
-      currentUser = data.user; // user object from backend
+      currentUser = data.user;
       document.getElementById('authPage').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
       document.getElementById('studentName').innerText = currentUser.username;
@@ -76,25 +81,26 @@ async function loginUser() {
   }
 }
 
-// =====================================================
+// =======================
 // LOGOUT FUNCTION
+// =======================
 function logoutUser() {
   currentUser = null;
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('authPage').style.display = 'flex';
 }
 
-// =====================================================
-// PROGRESS CHART FUNCTION using Chart.js
+// =======================
+// PROGRESS CHART FUNCTION
+// =======================
 function updateProgressChart() {
   const ctx = document.getElementById('progressChart').getContext('2d');
 
-  // Example progress (could later be fetched from backend)
   const data = {
     labels: ['Math', 'Science', 'History', 'English', 'Games'],
     datasets: [{
       label: 'Progress (%)',
-      data: [50, 40, 70, 60, 80],
+      data: currentUser.progress.length ? currentUser.progress : [50, 40, 70, 60, 80],
       backgroundColor: '#FBBF24',
       borderRadius: 5
     }]
@@ -102,23 +108,16 @@ function updateProgressChart() {
 
   const options = {
     responsive: true,
-    plugins: {
-      legend: { display: false }
-    },
-    scales: {
-      y: { beginAtZero: true, max: 100 }
-    }
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, max: 100 } }
   };
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: options
-  });
+  new Chart(ctx, { type: 'bar', data, options });
 }
 
-// =====================================================
+// =======================
 // MINI-GAMES HANDLER
+// =======================
 function startGame(game) {
   if (!currentUser) return alert('Please login first.');
 
@@ -126,15 +125,17 @@ function startGame(game) {
   if (game === 'words') wordGame();
 }
 
-// =====================================================
+// =======================
 // EXAM PANEL HANDLER
+// =======================
 function startExam(exam) {
   if (!currentUser) return alert('Please login first.');
   alert(`Starting ${exam} exam panel...`);
 }
 
-// =====================================================
+// =======================
 // MATH GAME
+// =======================
 function mathGame() {
   const a = Math.floor(Math.random() * 10) + 1;
   const b = Math.floor(Math.random() * 10) + 1;
@@ -148,8 +149,9 @@ function mathGame() {
   }
 }
 
-// =====================================================
+// =======================
 // WORD BUILDER GAME
+// =======================
 function wordGame() {
   const word = 'EDUQUEST';
   const shuffled = word.split('').sort(() => 0.5 - Math.random()).join('');
@@ -163,13 +165,13 @@ function wordGame() {
   }
 }
 
-// =====================================================
+// =======================
 // STREAK FUNCTIONS
+// =======================
 async function incrementStreak() {
   currentUser.streak += 1;
   updateStreak();
 
-  // Save streak to backend
   try {
     await fetch(`${API_URL}/streak`, {
       method: "POST",
@@ -184,16 +186,16 @@ async function incrementStreak() {
 function updateStreak() {
   document.getElementById('streakCounter').innerText = currentUser.streak;
 
-  // Show badges based on streak
   if (currentUser.streak >= 5) document.getElementById('badge1').style.opacity = 1;
   if (currentUser.streak >= 10) document.getElementById('badge2').style.opacity = 1;
   if (currentUser.streak >= 20) document.getElementById('badge3').style.opacity = 1;
 }
 
-// =====================================================
+// =======================
 // HERO ANIMATIONS
+// =======================
 const badges = document.querySelectorAll('.floating-badge');
-badges.forEach((badge, i) => {
+badges.forEach((badge) => {
   const speed = Math.random() * 2 + 2;
   const left = Math.random() * 80 + 10;
   const top = Math.random() * 60 + 20;

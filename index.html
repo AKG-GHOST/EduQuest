@@ -7,9 +7,7 @@
   
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-  
+
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -28,7 +26,7 @@
     </div>
     <div class="auth-forms">
       <!-- LOGIN FORM -->
-      <div class="form-container login">
+      <div class="form-container login active">
         <h2>Login</h2>
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
@@ -41,7 +39,7 @@
         <input type="text" id="regUsername" placeholder="Username">
         <input type="password" id="regPassword" placeholder="Password">
         <button onclick="registerUser()">Register</button>
-        <p>Already have account? <span onclick="toggleAuth()">Login</span></p>
+        <p>Already have an account? <span onclick="toggleAuth()">Login</span></p>
       </div>
     </div>
   </div>
@@ -124,8 +122,6 @@
   </div>
 
   <!-- JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
