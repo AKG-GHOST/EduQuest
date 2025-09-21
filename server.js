@@ -28,7 +28,7 @@ app.post("/register", (req, res) => {
     const exists = users.find((u) => u.username === username);
     if(exists) return res.status(400).json({message: "Username already exists."});
     const newUser = { username, password, streak: 0, progress: []};
-    users.push(nweUser);
+    users.push(newUser);
     saveUsers();
 
     res.json({message: "Registered successfully!"});
